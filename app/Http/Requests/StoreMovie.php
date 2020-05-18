@@ -24,11 +24,11 @@ class StoreMovie extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'bail|required|string|max:255',
+            'title' => 'required|string|max:255',
             'film_genre' => 'string|max:255',
-            'description' =>'string',
+            'description' => 'string',
             'country' => 'required|string|max:255',
-            'cover' =>'image'
-        ];
+//            'cover' =>'image'
+    ];
     }
 }
