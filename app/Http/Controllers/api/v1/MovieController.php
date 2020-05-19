@@ -8,6 +8,7 @@ use App\Http\Resources\Movie as MovieResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
 
 class MovieController extends Controller
 {
@@ -41,9 +42,12 @@ class MovieController extends Controller
     public function cover(Request $request, $id)
     {
         $movie = Movie::findOrFail($id);
-        $fileName = "cover_{$id}.jpg";
-        $path = $request->file('cover')->move(public_path("/covers"), $fileName);
-        $coverUrl = url("/covers/".$fileName);
+        $cover = $request->file('cover');
+        $coverName = "cover_{$id}_".time().'.'.$cover->getClientOriginalExtension();
+        $coverUrl = public_path('/covers/'.$coverName);
+        $coverImage = Image::make($cover->getRealPath());
+        $coverImage->fit(200,200)->save($coverUrl);
+
         $movie->update(['cover' => $coverUrl]);
         return response()->json(['url'=>$coverUrl], 200);
     }
