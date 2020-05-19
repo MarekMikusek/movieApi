@@ -20,6 +20,7 @@ Route::prefix("v1")->namespace("api\\v1")->group(function(){
         Route::put("/{id}", "MovieController@update");
         Route::delete("/{id}", "MovieController@destroy");
         Route::post("/cover/{id}", "MovieController@cover");
+        Route::get("/search/{search}", "MovieController@search");
     });
 
 });

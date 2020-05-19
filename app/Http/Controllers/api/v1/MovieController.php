@@ -15,7 +15,6 @@ class MovieController extends Controller
 
     public function index()
     {
-//        $movies = Movie::paginate(15);
         return MovieResource::collection(Movie::all());
     }
 
@@ -50,5 +49,10 @@ class MovieController extends Controller
 
         $movie->update(['cover' => $coverUrl]);
         return response()->json(['url'=>$coverUrl], 200);
+    }
+
+    public function search($search)
+    {
+        return MovieResource::collection(Movie::where('title', 'like',"%{$search}%")->get());
     }
 }
