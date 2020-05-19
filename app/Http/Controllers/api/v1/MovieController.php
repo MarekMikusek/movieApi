@@ -37,4 +37,14 @@ class MovieController extends Controller
         $movie->delete();
         return response()->noContent();
     }
+
+    public function cover(Request $request, $id)
+    {
+        $movie = Movie::findOrFail($id);
+        $fileName = "cover_{$id}.jpg";
+        $path = $request->file('cover')->move(public_path("/covers"), $fileName);
+        $coverUrl = url("/covers/".$fileName);
+        $movie->update(['cover' => $coverUrl]);
+        return response()->json(['url'=>$coverUrl], 200);
+    }
 }
