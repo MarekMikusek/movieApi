@@ -25,7 +25,7 @@ class StoreMovie extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'film_genre' => 'string|max:255',
+            'genres' => 'array',
             'description' => 'string',
             'country' => 'required|string|max:255',
 //            'cover' =>'image'

@@ -15,19 +15,21 @@ class MovieController extends Controller
 
     public function index()
     {
-        return MovieResource::collection(Movie::all());
+        return MovieResource::collection(Movie::with('genres')->get());
     }
 
     public function store(StoreMovie $movie)
     {
-        $movie = Movie::create($movie->validated());
-        return new MovieResource($movie);
+        $movieModel = Movie::create($movie->validated());
+        $movieModel->genres()->attach($movie->validated()['genres']);
+        return new MovieResource($movieModel);
     }
 
     public function update(Request $request, $id)
     {
         $movie = Movie::findOrFail($id);
-        $movie->update($request->all());
+        $movie->genres()->sync($request->genres);
+        $movie->update($request->except('genres'));
         return new MovieResource($movie);
     }
 
